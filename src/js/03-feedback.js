@@ -2,8 +2,9 @@ import throttle from 'lodash.throttle';
 
 const feedbackForm = document.querySelector('.feedback-form');
 const KEY_FEEDBACK = 'feedback-form-state';
-let registerData = getStorageData();
-fillData(registerData);
+let registerData;
+
+fillData(getStorageData());
 
 feedbackForm.addEventListener('input', throttle(onInputClick, 500));
 feedbackForm.addEventListener('submit', onSubmitClick);
@@ -19,14 +20,13 @@ function onSubmitClick(evt) {
     alert('Заповніть обидва поля email і message');
     return;
   }
-  console.log(`email: ${registerData.email}, message: ${registerData.message}`);
+  console.log(registerData);
   localStorage.removeItem(KEY_FEEDBACK);
-  registerData = getStorageData();
-  fillData(registerData);
+  fillData(getStorageData());
 }
 
 function getStorageData() {
-  return JSON.parse(localStorage.getItem(KEY_FEEDBACK)) ?? {};
+  return (registerData = JSON.parse(localStorage.getItem(KEY_FEEDBACK)) ?? {});
 }
 
 function fillData({ email, message }) {
